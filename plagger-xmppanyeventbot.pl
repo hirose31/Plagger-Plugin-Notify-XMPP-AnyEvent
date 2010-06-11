@@ -18,6 +18,9 @@ my $path = File::Spec->catfile( $opts{c} )
 
 my $loader = Plagger::ConfigLoader->new;
 my $config = $loader->load($path);
+$loader->load_include($config);
+$loader->load_recipes($config);
+
 my $plugin = first { $_->{module} eq 'Notify::XMPP::AnyEvent' } @{ $config->{plugins} };
 my $port = $plugin->{config}->{daemon_port} || 9997;
 
