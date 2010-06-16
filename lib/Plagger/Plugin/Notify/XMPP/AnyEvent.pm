@@ -23,13 +23,13 @@ sub initialize {
 sub notify_entry {
     my ( $self, $context, $args ) = @_;
     my $port = $self->conf->{daemon_port} || 9997; # default port is 9997
-    my $title = encode( 'utf8', $args->{entry}->{title} );
+    my $body = encode('utf-8', $self->templatize('xmpp_notify.tt', $args));
     my $cv = AnyEvent->condvar;
     tcp_connect "localhost", $port, sub {
         my ($fh) = @_ or die "unable to connect: $!";
         my $handle;
         $handle = AnyEvent::Handle->new( fh => $fh, );
-        $handle->push_write( json => { mes => $title, to => $self->conf->{to} } );
+        $handle->push_write( json => { mes => $body, to => $self->conf->{to} } );
         $cv->send;
     };
     $cv->recv;
