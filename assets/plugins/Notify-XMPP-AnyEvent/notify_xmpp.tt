@@ -1,2 +1,1 @@
-[% entry.title || '(no-title)' %]
-[% entry.permalink %]
+[% IF feed.title %][% feed.title_text %]: [% END %][% entry.title_text %][% IF entry.author %] ([% entry.author %])[% END %] - [% entry.permalink %]
